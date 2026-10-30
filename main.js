@@ -4,9 +4,12 @@ const BROKEN_MATCH_LIMIT = 10;
 
 module.exports = class CanvasAttachmentRelinkerPlugin extends Plugin {
   async onload() {
+    this.renameQueue = Promise.resolve();
     this.registerEvent(
       this.app.vault.on("rename", (file, oldPath) => {
-        void this.handleVaultRename(file, oldPath);
+        this.renameQueue = this.renameQueue
+          .then(() => this.handleVaultRename(file, oldPath))
+          .catch((error) => console.error("[canvas-attachment-relinker] rename failed", error));
       })
     );
 
@@ -150,7 +153,7 @@ module.exports = class CanvasAttachmentRelinkerPlugin extends Plugin {
     let raw;
 
     try {
-      raw = await this.app.vault.cachedRead(canvasFile);
+      raw = await this.app.vault.read(canvasFile);
     } catch (error) {
       console.warn("[canvas-attachment-relinker] failed to read canvas", canvasFile.path, error);
       return { updated: false, updatedNodes: 0 };
