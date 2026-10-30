@@ -3,7 +3,7 @@
   "name": "Canvas Attachment Relinker",
   "version": "0.1.0",
   "minAppVersion": "1.5.0",
-  "description": "Keeps Obsidian canvas file cards synced when vault files are renamed or moved, and repairs broken references.",
+  "description": "Keep canvas file cards in sync when vault files are renamed or moved.",
   "author": "Dylan Chidambaram",
   "isDesktopOnly": false
 }
